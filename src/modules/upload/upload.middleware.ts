@@ -15,13 +15,26 @@ const allowedMimeTypes = [
   "image/bmp",
 ];
 
+const allowedExtensions = [
+  ".txt",
+  ".pdf",
+  ".docx",
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".webp",
+  ".bmp",
+  ".tiff",
+];
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, "uploads/");
   },
 
   filename(req, file, cb) {
-    const uniqueName = Date.now() + path.extname(file.originalname);
+    const uniqueName = `${Date.now()}${path.extname(file.originalname)}`;
+
     cb(null, uniqueName);
   },
 });
@@ -34,8 +47,16 @@ export const upload = multer({
   },
 
   fileFilter(req, file, cb) {
-    if (!allowedMimeTypes.includes(file.mimetype)) {
-      return cb(new Error("Unsurppoted file type"));
+    console.log("MIME:", file.mimetype);
+
+    const extension = path.extname(file.originalname).toLowerCase();
+
+    const isMimeValid = allowedMimeTypes.includes(file.mimetype);
+
+    const isExtensionValid = allowedExtensions.includes(extension);
+
+    if (!isMimeValid && !isExtensionValid) {
+      return cb(new Error("Unsupported file type"));
     }
 
     cb(null, true);
