@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
+
 import { analyzeText } from "./text-analysis.service";
+import { analyzeTextSchema } from "./text-analysis.schema";
 
 export function analyzeTextController(req: Request, res: Response) {
-  const { text } = req.body;
+  const validation = analyzeTextSchema.safeParse(req.body);
 
-  if (!text) {
+  if (!validation.success) {
     return res.status(400).json({
-      error: "Text is required",
+      error: validation.error.flatten(),
     });
   }
+
+  const { text, removeStopwords } = validation.data;
 
   const result = analyzeText(text);
 
