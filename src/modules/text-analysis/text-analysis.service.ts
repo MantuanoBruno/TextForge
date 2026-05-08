@@ -11,10 +11,12 @@ export function analyzeText(text: string) {
   }
 
   const sorteWords = Object.entries(frequencyMap)
+    .filter(([_, count]) => count > 1)
     .sort((a, b) => b[1] - a[1])
     .map(([word, count]) => ({
       word,
       count,
+      percentage: Number(((count / words.length) * 100).toFixed(2)),
     }));
 
   return {
