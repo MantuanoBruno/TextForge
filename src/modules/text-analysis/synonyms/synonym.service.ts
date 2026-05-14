@@ -1,16 +1,9 @@
-import { loadPtBrSynonyms } from "./synonym-loader";
+import { synonymMap } from "./synonym-loader";
 
-import { stemPtBr } from "../language/stemmers/ptbr-stemmer";
+import { normalizeWord } from "./synonym-normalizer";
 
-const synonyms = loadPtBrSynonyms();
+export function getSynonyms(word: string): string[] {
+  const normalized = normalizeWord(word);
 
-export async function getSynonyms(word: string): Promise<string[]> {
-  const stem = stemPtBr(word);
-  const localSynonyms = synonyms[stem as keyof typeof synonyms];
-
-  if (!localSynonyms) {
-    return [];
-  }
-
-  return localSynonyms.slice(0, 5);
+  return synonymMap[normalized] || [];
 }

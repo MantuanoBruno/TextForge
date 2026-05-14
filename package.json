@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "generate:thesaurus": "tsx scripts/generate-thesaurus.ts",
+    "parse:wordnet": "tsx scripts/parsers/parse-openwordnet.ts"
   },
   "dependencies": {
     "axios": "^1.16.0",
@@ -27,6 +29,7 @@
     "@types/pdf-parse": "^1.1.5",
     "@types/snowball-stemmers": "^0.6.2",
     "ts-node-dev": "^2.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.2"
   }
 }
